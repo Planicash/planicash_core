@@ -1,0 +1,3 @@
+[submodule "planicash_models"]
+	path = planicash_models
+	url = https://github.com/Planicash/planicash_models.git
