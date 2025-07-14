@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  mysql-planicash:
+    image: mysql:latest
+    container_name: mysql-planicash
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+    ports:
+      - "5432:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+  phpmyadmin-planicash:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin-planicash
+    environment:
+      PMA_HOST: mysql-planicash
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql-planicash
+    restart: unless-stopped
+
+volumes:
+  mysql-data: 
