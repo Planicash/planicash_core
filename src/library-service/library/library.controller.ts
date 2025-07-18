@@ -8,33 +8,34 @@ import {
   Post,
 } from '@nestjs/common';
 import { LibraryService } from './library.service';
+import { Library } from '@prisma/client';
 
-@Controller('librarys')
+@Controller('libraries')
 export class LibraryController {
   constructor(private readonly libraryService: LibraryService) {}
 
   @Post()
-  create(@Body() createLibraryDto: any) {
-    return this.libraryService.create(createLibraryDto);
+  createLibrary(@Body() createLibrary: Library) {
+    return this.libraryService.createLibrary(createLibrary);
   }
 
   @Get()
-  findAll() {
-    return this.libraryService.findAll();
+  findAllLibrary() {
+    return this.libraryService.findAllLibraries();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.libraryService.findOne(+id);
+  findOneLibrary(@Param('id') id: string) {
+    return this.libraryService.findOneLibrary(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLibraryDto: any) {
-    return this.libraryService.update(+id, updateLibraryDto);
+  updateLibrary(@Param('id') id: string, @Body() updateLibrary: Library) {
+    return this.libraryService.updateLibrary(Number(id), updateLibrary);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.libraryService.remove(+id);
+  removeLibrary(@Param('id') id: string) {
+    return this.libraryService.removeLibrary(Number(id));
   }
 }
