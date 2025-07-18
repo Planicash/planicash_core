@@ -1,8 +1,11 @@
 import { Module } from "@nestjs/common";
-import { PaymentsController } from "../payments/payments.controller";
+import { PaymentsModule } from "../payments/payments.module";
 
 @Module({
-    imports: [PaymentsController],
+    imports: [
+        PaymentsModule
+    ],
+    providers: [],
 })
 
 export class GPaymentsModule { }
