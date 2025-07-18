@@ -26,8 +26,8 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
 
   // Relations
-  modules          Module[]
-  moduleMembers    ModuleMember[]
+  library          Library[]
+  libraryMembers    LibraryMember[]
   forms            Form[]
   incomes          Income[]
   budgets          Budget[]
@@ -101,7 +101,7 @@ model Income {
 model Budget {
   id           Int      @id @default(autoincrement())
   userId       Int      @map("user_id")
-  moduleId     Int?     @map("module_id")
+  libraryId     Int?     @map("library_id")
   category     String   @db.VarChar(100)
   monthlyLimit Decimal  @map("monthly_limit") @db.Decimal(12, 2)
   month        Int
@@ -110,7 +110,7 @@ model Budget {
 
   // Relations
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module Module? @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  library Library? @relation(fields: [libraryId], references: [id], onDelete: Cascade)
 
   @@map("budgets")
 }
@@ -119,7 +119,7 @@ model Budget {
 // MODULE MODELS
 // ========================================
 
-model Module {
+model Library {
   id          Int      @id @default(autoincrement())
   ownerId     Int      @map("owner_id")
   name        String   @db.VarChar(255)
@@ -129,37 +129,37 @@ model Module {
 
   // Relations
   owner         User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  members       ModuleMember[]
+  members       LibraryMember[]
   accounts      Account[]
   budgets       Budget[]
   transactions  Transaction[]
 
-  @@map("modules")
+  @@map("library")
 }
 
-model ModuleMember {
+model LibraryMember {
   id         Int      @id @default(autoincrement())
-  moduleId   Int      @map("module_id")
+  libraryId   Int      @map("library_id")
   userId     Int      @map("user_id")
   permission Permission
   invitedAt  DateTime @default(now()) @map("invited_at")
 
   // Relations
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  library Library @relation(fields: [libraryId], references: [id], onDelete: Cascade)
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("module_members")
+  @@map("library_members")
 }
 
 model Account {
   id           Int      @id @default(autoincrement())
-  moduleId     Int      @map("module_id")
+  libraryId     Int      @map("library_id")
   titleAccount String   @map("title_account") @db.VarChar(255)
   formId       Int?     @map("form_id")
   createdAt    DateTime @default(now()) @map("created_at")
 
   // Relations
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  library Library @relation(fields: [libraryId], references: [id], onDelete: Cascade)
   form   Form?  @relation(fields: [formId], references: [id], onDelete: SetNull)
 
   @@map("accounts")
@@ -183,7 +183,7 @@ model Form {
 model Transaction {
   id              Int           @id @default(autoincrement())
   userId          Int           @map("user_id")
-  moduleId        Int?          @map("module_id")
+  libraryId        Int?          @map("library_id")
   transactionDate DateTime      @map("transaction_date") @db.Date
   description     String?       @db.VarChar(255)
   category        String?       @db.VarChar(100)
@@ -193,7 +193,7 @@ model Transaction {
 
   // Relations
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module Module? @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  library Library? @relation(fields: [libraryId], references: [id], onDelete: Cascade)
 
   @@map("transactions")
 }
